@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Variables CSS de color — cargadas desde site_settings via ThemeProvider
+   Estos son los valores por defecto (tema oscuro tipo MangaToon/Madara)
+   ============================================================ */
+:root {
+  --color-primary:    #e11d48;
+  --color-secondary:  #1e1b4b;
+  --color-bg:         #0f0f0f;
+  --color-card:       #1a1a2e;
+  --color-text:       #f1f5f9;
+  --color-text-muted: #94a3b8;
+  --color-accent:     #f59e0b;
+  --color-border:     #2d2d44;
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+/* ── Scrollbar personalizado ─────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--color-card); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
+
+/* ── Lector webtoon / scroll vertical ───────────────────────── */
+.webtoon-reader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #000;
+}
+.webtoon-reader img {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  /* Sin gaps entre imágenes para modo scroll continuo */
+}
+
+/* ── Lector manga / página por página ───────────────────────── */
+.page-reader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  background: #000;
+}
+.page-reader img {
+  max-height: 90vh;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* ── Lector novela ───────────────────────────────────────────── */
+.novel-reader {
+  font-family: Georgia, Cambria, serif;
+  line-height: 1.9;
+  font-size: 1.1rem;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  color: var(--color-text);
+}
+.novel-reader p { margin-bottom: 1.2em; }
+
+/* ── Tarjeta de serie ────────────────────────────────────────── */
+.series-card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.series-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-primary);
+}
+
+/* ── Badge de tipo ───────────────────────────────────────────── */
+.badge-type {
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Icono de monedas ────────────────────────────────────────── */
+.coins-badge {
+  background: var(--color-accent);
+  color: #000;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
