@@ -13,7 +13,7 @@ export default function LibraryPage() {
   const t = useTranslations('library');
   const tNav = useTranslations('nav');
   const locale = useLocale();
-  const { user, isLoading: authLoading, loadUser } = useAuthStore();
+  const { user, loading: authLoading, loadUser } = useAuthStore();
 
   const [filter, setFilter] = useState<LibraryStatus>('all');
   const [entries, setEntries] = useState<any[]>([]);

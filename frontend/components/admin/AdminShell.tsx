@@ -31,7 +31,7 @@ const ADMIN_NAV = [
 ];
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
-  const { user, isLoading, loadUser } = useAuthStore();
+  const { user, loading: isLoading, loadUser } = useAuthStore();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 

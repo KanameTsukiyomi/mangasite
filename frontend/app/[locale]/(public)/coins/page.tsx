@@ -25,7 +25,7 @@ function CoinsContent() {
   const t = useTranslations('coins');
   const locale = useLocale();
   const searchParams = useSearchParams();
-  const { user, isLoading: authLoading, loadUser } = useAuthStore();
+  const { user, loading: authLoading, loadUser } = useAuthStore();
 
   const [packages, setPackages] = useState<CoinPackage[]>([]);
   const [packagesLoading, setPackagesLoading] = useState(true);

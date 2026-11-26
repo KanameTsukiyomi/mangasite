@@ -228,7 +228,7 @@ router.post('/stripe', async (req: Request, res: Response) => {
   }
 
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object as Stripe.CheckoutSession;
+    const session = event.data.object as Stripe.Checkout.Session;
     const { user_id, coins } = session.metadata!;
     await creditCoins(user_id, parseInt(coins), 'stripe', session.id);
   }

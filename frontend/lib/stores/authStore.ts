@@ -10,6 +10,7 @@ export interface UserProfile {
   role: string;
   coins_balance: number;
   language: string;
+  bio?: string | null;
 }
 
 interface AuthStore {

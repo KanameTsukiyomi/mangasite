@@ -7,3 +7,5 @@ dist/
 .netlify/
 npm-debug.log*
 *.log
+*.tsbuildinfo
+next-env.d.ts

@@ -10,7 +10,7 @@ import api from '@/lib/api';
 export default function ProfilePage() {
   const tNav = useTranslations('nav');
   const locale = useLocale();
-  const { user, isLoading, loadUser } = useAuthStore();
+  const { user, loading: isLoading, loadUser } = useAuthStore();
 
   const [username, setUsername] = useState('');
   const [bio, setBio] = useState('');
