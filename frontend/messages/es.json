@@ -10,7 +10,8 @@
     "profile": "Perfil",
     "logout": "Cerrar sesión",
     "admin": "Administración",
-    "coins": "Mis monedas"
+    "coins": "Monedas",
+    "coins_store": "Tienda de Monedas"
   },
   "home": {
     "featured": "Destacados",

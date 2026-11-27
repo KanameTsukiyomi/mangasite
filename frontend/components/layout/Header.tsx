@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { key: 'home',    href: '/' },
   { key: 'latest',  href: '/search?sort=updated_at' },
   { key: 'genres',  href: '/genres' },
+  { key: 'coins',   href: '/coins' },
 ] as const;
 
 export function Header() {
@@ -81,19 +82,26 @@ export function Header() {
 
           {/* ── Navegación desktop ── */}
           <nav className="hidden md:flex items-center gap-1 ml-4">
-            {NAV_LINKS.map(link => (
-              <Link
-                key={link.key}
-                href={link.href as any}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  pathname === link.href
-                    ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/10'
-                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/5'
-                }`}
-              >
-                {t(link.key as any)}
-              </Link>
-            ))}
+            {NAV_LINKS.map(link => {
+              const isCoins = link.key === 'coins';
+              const active = pathname === link.href;
+              return (
+                <Link
+                  key={link.key}
+                  href={link.href as any}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                    active
+                      ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/10'
+                      : isCoins
+                        ? 'text-amber-400 hover:text-amber-300 hover:bg-amber-400/10'
+                        : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/5'
+                  }`}
+                >
+                  {isCoins && <span>🪙</span>}
+                  {t(link.key as any)}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* ── Spacer ── */}
@@ -135,19 +143,31 @@ export function Header() {
 
           {/* ── Auth ── */}
           {user ? (
-            <div className="flex items-center gap-3">
-              {/* Monedas */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              {/* Monedas & Recarga */}
               <Link
                 href="/coins"
-                className="hidden sm:flex items-center gap-1.5 text-sm font-semibold
-                           text-[var(--color-accent)] hover:opacity-80 transition-opacity"
+                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 hover:bg-amber-500/20 text-xs sm:text-sm font-bold transition-all shadow-sm"
+                title="Tienda de monedas / Comprar"
               >
-                🪙 {user.coins_balance.toLocaleString()}
+                <span>🪙</span>
+                <span>{user.coins_balance.toLocaleString()}</span>
+                <span className="hidden sm:inline-block text-[10px] uppercase font-bold bg-amber-500/20 px-1.5 py-0.5 rounded text-amber-300 ml-0.5">
+                  +
+                </span>
               </Link>
               <UserMenu />
             </div>
           ) : (
             <div className="flex items-center gap-2">
+              <Link
+                href="/coins"
+                className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/25 hover:bg-amber-500/20 transition-all"
+                title="Tienda de monedas"
+              >
+                <span>🪙</span>
+                <span className="hidden sm:inline">{t('coins')}</span>
+              </Link>
               <Link
                 href="/login"
                 className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)]

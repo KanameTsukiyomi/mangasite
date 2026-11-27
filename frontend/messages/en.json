@@ -10,7 +10,8 @@
     "profile": "Profile",
     "logout": "Log Out",
     "admin": "Admin Panel",
-    "coins": "My Coins"
+    "coins": "Coins",
+    "coins_store": "Coins Store"
   },
   "home": {
     "featured": "Featured",

@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { key: 'home',    href: '/',                        icon: Home },
   { key: 'latest',  href: '/search?sort=updated_at',  icon: Clock },
   { key: 'genres',  href: '/genres',                  icon: Layers },
+  { key: 'coins',   href: '/coins',                   icon: Coins },
   { key: 'library', href: '/library',                 icon: BookOpen },
 ] as const;
 
@@ -58,17 +59,26 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         {/* Usuario (si está autenticado) */}
         {user && (
           <div className="px-4 py-4 border-b border-[var(--color-border)]">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center
-                              justify-center text-white font-bold text-sm">
-                {user.username.slice(0, 2).toUpperCase()}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center
+                                justify-center text-white font-bold text-sm">
+                  {user.username.slice(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <p className="font-semibold text-[var(--color-text)] text-sm">{user.username}</p>
+                  <p className="text-xs text-[var(--color-accent)] font-medium">
+                    🪙 {user.coins_balance.toLocaleString()} monedas
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="font-semibold text-[var(--color-text)] text-sm">{user.username}</p>
-                <p className="text-xs text-[var(--color-accent)]">
-                  🪙 {user.coins_balance.toLocaleString()} monedas
-                </p>
-              </div>
+              <Link
+                href="/coins"
+                onClick={onClose}
+                className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition-colors"
+              >
+                + Recargar
+              </Link>
             </div>
           </div>
         )}
@@ -78,6 +88,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
           {NAV_LINKS.map(link => {
             const Icon = link.icon;
             const active = pathname === link.href;
+            const isCoins = link.key === 'coins';
             return (
               <Link
                 key={link.key}
@@ -85,12 +96,19 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                 onClick={onClose}
                 className={`flex items-center gap-3 px-5 py-3 text-sm transition-colors ${
                   active
-                    ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/10'
-                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/5'
+                    ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/10 font-medium'
+                    : isCoins
+                      ? 'text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 font-medium'
+                      : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/5'
                 }`}
               >
-                <Icon size={18} />
-                {t(link.key as any)}
+                <Icon size={18} className={isCoins ? 'text-amber-400' : ''} />
+                <span>{t(link.key as any)}</span>
+                {isCoins && (
+                  <span className="ml-auto text-[10px] uppercase font-bold bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">
+                    Tienda
+                  </span>
+                )}
               </Link>
             );
           })}
