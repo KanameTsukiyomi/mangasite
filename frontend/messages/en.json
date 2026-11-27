@@ -103,7 +103,12 @@
     "no_account":      "Don't have an account?",
     "have_account":    "Already have an account?",
     "login_error":     "Invalid email or password",
-    "register_error":  "Could not create account"
+    "register_error":  "Could not create account",
+    "continue_google": "Continue with Google",
+    "continue_discord":"Continue with Discord",
+    "or_email":        "or with email",
+    "oauth_error":     "Could not complete social sign-in. Please try again.",
+    "check_email":     "Account created! Check your email to confirm before logging in."
   },
   "search": {
     "placeholder":   "Search series...",

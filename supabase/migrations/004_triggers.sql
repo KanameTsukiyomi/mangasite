@@ -8,13 +8,28 @@
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 DECLARE
-  base_username TEXT;
+  raw_name       TEXT;
+  base_username  TEXT;
   final_username TEXT;
-  counter INTEGER := 0;
+  oauth_avatar   TEXT;
+  counter        INTEGER := 0;
 BEGIN
-  -- Generar username desde email, limpiar y limitar
-  base_username := LOWER(SPLIT_PART(NEW.email, '@', 1));
+  -- Obtener nombre base desde OAuth (Google/Discord) o email
+  raw_name := COALESCE(
+    NULLIF(NEW.raw_user_meta_data->>'preferred_username', ''),
+    NULLIF(NEW.raw_user_meta_data->>'user_name', ''),
+    NULLIF(NEW.raw_user_meta_data->>'full_name', ''),
+    NULLIF(NEW.raw_user_meta_data->>'name', ''),
+    NULLIF(SPLIT_PART(COALESCE(NEW.email, ''), '@', 1), ''),
+    'user_' || LEFT(NEW.id::TEXT, 8)
+  );
+
+  base_username := LOWER(raw_name);
   base_username := REGEXP_REPLACE(base_username, '[^a-z0-9_]', '_', 'g');
+  base_username := TRIM(BOTH '_' FROM base_username);
+  IF base_username = '' OR base_username IS NULL THEN
+    base_username := 'user_' || LEFT(NEW.id::TEXT, 8);
+  END IF;
   base_username := LEFT(base_username, 20);
   final_username := base_username;
 
@@ -24,14 +39,21 @@ BEGIN
     final_username := LEFT(base_username, 17) || counter::TEXT;
   END LOOP;
 
-  INSERT INTO public.profiles (id, username, role, coins_balance, language)
+  oauth_avatar := COALESCE(
+    NULLIF(NEW.raw_user_meta_data->>'avatar_url', ''),
+    NULLIF(NEW.raw_user_meta_data->>'picture', '')
+  );
+
+  INSERT INTO public.profiles (id, username, avatar_url, role, coins_balance, language)
   VALUES (
     NEW.id,
     final_username,
+    oauth_avatar,
     'user',
     0,
-    COALESCE(NEW.raw_user_meta_data->>'language', 'es')
-  );
+    COALESCE(NULLIF(NEW.raw_user_meta_data->>'language', ''), 'es')
+  )
+  ON CONFLICT (id) DO NOTHING;
 
   RETURN NEW;
 END;
